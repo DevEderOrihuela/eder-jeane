@@ -60,13 +60,14 @@ border-radius:15px;
 
 /* FOTO */
 .photo{
-width:160px;
-height:160px;
+width:170px;
+height:170px;
 border-radius:50%;
 object-fit:cover;
 border:4px solid white;
 margin-bottom:15px;
 box-shadow:0 0 25px rgba(255,255,255,0.6);
+transition:opacity 1s;
 }
 
 h1{
@@ -81,6 +82,7 @@ line-height:1.4;
 }
 
 /* CUENTA REGRESIVA */
+
 .countdown{
 display:flex;
 justify-content:space-around;
@@ -100,13 +102,13 @@ font-size:18px;
 font-weight:bold;
 }
 
-/* ANIMACION */
 @keyframes fadeIn{
 from{opacity:0;transform:scale(.8);}
 to{opacity:1;transform:scale(1);}
 }
 
 /* CORAZONES */
+
 .heart{
 position:absolute;
 color:rgba(255,255,255,0.7);
@@ -128,16 +130,15 @@ animation:floatUp 6s linear infinite;
 <div class="card" id="card">
 
 <div class="moonCounter">
-🌙  <span id="diasJuntos"></span> noches soñando contigo
+🌙  <span id="diasJuntos"></span> noches que sueño contigo
 </div>
 
-<img src="foto.jpg" class="photo">
+<img src="foto1.jpg" class="photo" id="foto">
 
 <h1>Eder ❤️ Jeane</h1>
 
 <div class="message">
-Cada segundo que pasa es un segundo menos para volver a verte.  
-Te extraño más de lo que las palabras pueden decir 💕
+Cada segundo que pasa es un segundo menos para volver a verte 💕
 </div>
 
 <div class="countdown">
@@ -169,65 +170,90 @@ Te extraño más de lo que las palabras pueden decir 💕
 <script>
 
 /* BOTON SORPRESA */
+
 document.getElementById("openBtn").onclick=function(){
 this.style.display="none";
 document.getElementById("card").style.display="block";
 }
 
 /* DIAS DESDE LA ULTIMA VEZ */
-const lastSeen = new Date("February 21, 2026 00:00:00").getTime();
+
+const lastSeen=new Date("February 21, 2026 00:00:00").getTime();
 
 function calcularDias(){
-const now = new Date().getTime();
-const diff = now - lastSeen;
-const dias = Math.floor(diff/(1000*60*60*24));
-document.getElementById("diasJuntos").innerText = dias;
+
+const now=new Date().getTime();
+const diff=now-lastSeen;
+const dias=Math.floor(diff/(1000*60*60*24));
+
+document.getElementById("diasJuntos").innerText=dias;
+
 }
 
 calcularDias();
 
-/* CUENTA REGRESIVA */
-const endDate = new Date("June 30, 2026 00:00:00").getTime();
+/* CUENTA REGRESIVA HASTA 30 ABRIL */
+
+const endDate=new Date("April 30, 2026 00:00:00").getTime();
 
 function updateCountdown(){
 
-const now = new Date().getTime();
-const distance = endDate-now;
+const now=new Date().getTime();
+const distance=endDate-now;
 
 if(distance<0){
 document.getElementById("card").innerHTML="<h1>💖 ¡Por fin juntos! 💖</h1>";
 return;
 }
 
-document.getElementById("days").innerText =
-Math.floor(distance/(1000*60*60*24));
-
-document.getElementById("hours").innerText =
-Math.floor((distance%(1000*60*60*24))/(1000*60*60));
-
-document.getElementById("minutes").innerText =
-Math.floor((distance%(1000*60*60))/(1000*60));
-
-document.getElementById("seconds").innerText =
-Math.floor((distance%(1000*60))/1000);
+document.getElementById("days").innerText=Math.floor(distance/(1000*60*60*24));
+document.getElementById("hours").innerText=Math.floor((distance%(1000*60*60*24))/(1000*60*60));
+document.getElementById("minutes").innerText=Math.floor((distance%(1000*60*60))/(1000*60));
+document.getElementById("seconds").innerText=Math.floor((distance%(1000*60))/1000);
 
 }
 
 setInterval(updateCountdown,1000);
 updateCountdown();
 
+/* CAMBIO AUTOMATICO DE FOTOS */
+
+const fotos=["foto1.jpg","foto2.jpg","foto3.jpg"];
+let index=0;
+
+function cambiarFoto(){
+
+index=(index+1)%fotos.length;
+
+const img=document.getElementById("foto");
+
+img.style.opacity=0;
+
+setTimeout(()=>{
+img.src=fotos[index];
+img.style.opacity=1;
+},500);
+
+}
+
+setInterval(cambiarFoto,4000);
+
 /* CORAZONES */
 
 function createHeart(){
+
 const heart=document.createElement("div");
 heart.classList.add("heart");
 heart.innerHTML="❤";
+
 heart.style.left=Math.random()*100+"vw";
 heart.style.fontSize=(Math.random()*20+15)+"px";
 heart.style.animationDuration=(Math.random()*3+3)+"s";
+
 document.body.appendChild(heart);
 
 setTimeout(()=>heart.remove(),6000);
+
 }
 
 setInterval(createHeart,500);
