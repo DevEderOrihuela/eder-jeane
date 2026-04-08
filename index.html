@@ -1,1 +1,254 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eder ❤️ Jeane</title>
 
+<style>
+
+body{
+margin:0;
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:linear-gradient(135deg,#1e1e2f,#ff4e8a);
+font-family:'Segoe UI',sans-serif;
+overflow:hidden;
+}
+
+/* BOTON */
+#openBtn{
+padding:15px 30px;
+font-size:18px;
+border:none;
+border-radius:30px;
+background:#ff4e8a;
+color:white;
+cursor:pointer;
+box-shadow:0 0 20px rgba(255,0,120,0.6);
+transition:.3s;
+}
+
+#openBtn:hover{
+transform:scale(1.1);
+}
+
+/* TARJETA */
+.card{
+display:none;
+width:360px;
+padding:30px;
+border-radius:25px;
+background:rgba(255,255,255,0.1);
+backdrop-filter:blur(20px);
+text-align:center;
+color:white;
+animation:fadeIn 2s ease forwards;
+box-shadow:0 0 40px rgba(255,0,120,0.6);
+}
+
+/* CONTADOR SUPERIOR */
+.moonCounter{
+font-size:14px;
+margin-bottom:15px;
+background:rgba(255,255,255,0.15);
+padding:8px;
+border-radius:15px;
+}
+
+/* FOTO */
+.photo{
+width:170px;
+height:170px;
+border-radius:50%;
+object-fit:cover;
+border:4px solid white;
+margin-bottom:15px;
+box-shadow:0 0 25px rgba(255,255,255,0.6);
+transition:opacity 1s;
+}
+
+h1{
+font-size:22px;
+margin-bottom:10px;
+}
+
+.message{
+font-size:14px;
+margin-bottom:20px;
+line-height:1.4;
+}
+
+/* CUENTA REGRESIVA */
+.countdown{
+display:flex;
+justify-content:space-around;
+flex-wrap:wrap;
+gap:10px;
+}
+
+.time-box{
+background:rgba(255,255,255,0.2);
+padding:10px;
+border-radius:15px;
+min-width:70px;
+}
+
+.number{
+font-size:18px;
+font-weight:bold;
+}
+
+@keyframes fadeIn{
+from{opacity:0;transform:scale(.8);}
+to{opacity:1;transform:scale(1);}
+}
+
+/* CORAZONES */
+.heart{
+position:absolute;
+color:rgba(255,255,255,0.7);
+animation:floatUp 6s linear infinite;
+}
+
+@keyframes floatUp{
+0%{transform:translateY(100vh);opacity:1;}
+100%{transform:translateY(-10vh);opacity:0;}
+}
+
+</style>
+</head>
+
+<body>
+
+<button id="openBtn">🎁 Abrir mi sorpresa</button>
+
+<div class="card" id="card">
+
+<div class="moonCounter">
+🌙 Han pasado <span id="diasJuntos"></span> días desde la última vez que nos vimos
+</div>
+
+<img src="foto1.jpg" class="photo" id="foto">
+
+<h1>Eder ❤️ Jeane</h1>
+
+<div class="message">
+Cada segundo que pasa es un segundo menos para volver a verte 💕
+</div>
+
+<div class="countdown">
+
+<div class="time-box">
+<div class="number" id="days"></div>
+<div>Días</div>
+</div>
+
+<div class="time-box">
+<div class="number" id="hours"></div>
+<div>Horas</div>
+</div>
+
+<div class="time-box">
+<div class="number" id="minutes"></div>
+<div>Min</div>
+</div>
+
+<div class="time-box">
+<div class="number" id="seconds"></div>
+<div>Seg</div>
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+/* BOTON SORPRESA */
+document.getElementById("openBtn").onclick=function(){
+this.style.display="none";
+document.getElementById("card").style.display="block";
+}
+
+/* DIAS DESDE LA ULTIMA VEZ */
+const lastSeen=new Date("February 21, 2026 00:00:00").getTime();
+
+function calcularDias(){
+const now=new Date().getTime();
+const diff=now-lastSeen;
+const dias=Math.floor(diff/(1000*60*60*24));
+document.getElementById("diasJuntos").innerText=dias;
+}
+calcularDias();
+
+/* CUENTA REGRESIVA HASTA 30 ABRIL */
+const endDate=new Date("April 30, 2026 00:00:00").getTime();
+
+function updateCountdown(){
+const now=new Date().getTime();
+const distance=endDate-now;
+
+if(distance<0){
+document.getElementById("card").innerHTML="<h1>💖 ¡Por fin juntos! 💖</h1>";
+return;
+}
+
+document.getElementById("days").innerText=Math.floor(distance/(1000*60*60*24));
+document.getElementById("hours").innerText=Math.floor((distance%(1000*60*60*24))/(1000*60*60));
+document.getElementById("minutes").innerText=Math.floor((distance%(1000*60*60))/(1000*60));
+document.getElementById("seconds").innerText=Math.floor((distance%(1000*60))/1000);
+}
+
+setInterval(updateCountdown,1000);
+updateCountdown();
+
+/* 6 FOTOS AUTOMATICAS */
+const fotos=[
+"foto1.jpg",
+"foto2.jpg",
+"foto3.jpg",
+"foto4.jpg",
+"foto5.jpg",
+"foto6.jpg"
+];
+
+let index=0;
+
+function cambiarFoto(){
+
+index=(index+1)%fotos.length;
+
+const img=document.getElementById("foto");
+
+img.style.opacity=0;
+
+setTimeout(()=>{
+img.src=fotos[index];
+img.style.opacity=1;
+},600);
+
+}
+
+setInterval(cambiarFoto,5000);
+
+/* CORAZONES */
+function createHeart(){
+const heart=document.createElement("div");
+heart.classList.add("heart");
+heart.innerHTML="❤";
+heart.style.left=Math.random()*100+"vw";
+heart.style.fontSize=(Math.random()*20+15)+"px";
+heart.style.animationDuration=(Math.random()*3+3)+"s";
+document.body.appendChild(heart);
+setTimeout(()=>heart.remove(),6000);
+}
+
+setInterval(createHeart,500);
+
+</script>
+
+</body>
+</html>
